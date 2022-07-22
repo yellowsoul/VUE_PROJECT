@@ -59,14 +59,15 @@
     <!-- 
       对话框
       visible.sync:控制对话框显示与隐藏用的
+      Form 组件提供了表单验证的功能，只需要通过 rules 属性传入约定的验证规则，并将 Form-Item 的 prop 属性设置为需校验的字段名即可
     -->
     <el-dialog :title="tmForm.id?'修改品牌':'添加品牌'" :visible.sync="dialogFormVisible">
     <!-- form表单 model属性，这个属性的作用是，把表单的数据收集到哪个对象的身上，将来表单验证，也需要这个属性 -->
-      <el-form style="80%" :model="tmForm">
-        <el-form-item label="品牌名称" label-width="100px">
+      <el-form style="80%" :model="tmForm"  :rules="rules" ref="ruleForm">
+        <el-form-item label="品牌名称" prop="tmName" label-width="100px">
           <el-input autocomplete="off" v-model="tmForm.tmName"></el-input>
         </el-form-item>
-        <el-form-item label="品牌LOGO" label-width="100px">
+        <el-form-item label="品牌LOGO" prop="logoUrl" label-width="100px">
           <!-- 这里收集数据，不能使用v-model,因为不是表单元素 
             action:设置图片上传的地址
             on-success:可以检测到图片上传成功，当图片上传成功，会执行一次
@@ -98,6 +99,15 @@
 export default {
   name: 'tradeMark',
   data() {
+    // 自定义校验规则
+    var validateTmName = (rule, value, callback) => {
+      // 书写自己的校验规则
+      if(value.length<2||value.length>10){
+        callback(new Error('品牌名字需要2-10位'))
+      }else{
+        callback();
+      }
+    };
     return {
       // 代表分页器第几页
       page:1,
@@ -113,7 +123,24 @@ export default {
       tmForm:{
         tmName:'',
         logoUrl:''
+      },
+      // 表单验证的规则
+      rules:{
+        // 品牌名称的验证规则
+        // required：必要要校验的字段（前面五角星有关系）  message 提示信息  trigger:用户行为设置（事件的设置blur、change）
+        tmName: [
+          { required: true, message: '请输入品牌名称', trigger: 'blur' },
+          // 品牌名称长度2-10，
+          // { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'change' }
+          // 自定义校验规则
+          { validator: validateTmName, trigger: 'change' }
+        ],
+        // 品牌的logo验证规则
+        logoUrl: [
+          { required: true, message: '请选择品牌图片' }
+        ],
       }
+      
     }
   },
   // 组件挂载完毕发请求
@@ -187,20 +214,29 @@ export default {
     },
 
     // 添加按钮：（添加品牌或者修改品牌）
-    async addOrUpdateTradeMark(){
-      this.dialogFormVisible = false;
-      // 发请求（添加品牌|修改品牌）
-      let result = await this.$API.trademark.reqAddOrUpdateTradeMark(this.tmForm);
-      if(result.code == 200){
-        // 弹出信息:添加品牌成功、修改品牌成功
-        this.$message({
-          message:this.tmForm.id?'修改品牌成功':'添加品牌成功',
-          type: 'success'
-        });
-        // 添加或者修改品牌成功以后，需要再次获取品牌列表进行展示
-        // 如果添加品牌：停留在第一页，修改品牌应该留在当前页面
-        this.getPageList(this.tmForm.id?this.page:1);
-      }
+    addOrUpdateTradeMark(){
+      // 当全部验证字段通过，再去书写业务逻辑
+      this.$refs.ruleForm.validate(async (success) => {
+        // 如果全部字段符合条件
+        if(success){
+          this.dialogFormVisible = false;
+          // 发请求（添加品牌|修改品牌）
+          let result = await this.$API.trademark.reqAddOrUpdateTradeMark(this.tmForm);
+          if(result.code == 200){
+            // 弹出信息:添加品牌成功、修改品牌成功
+            this.$message({
+              message:this.tmForm.id?'修改品牌成功':'添加品牌成功',
+              type: 'success'
+            });
+            // 添加或者修改品牌成功以后，需要再次获取品牌列表进行展示
+            // 如果添加品牌：停留在第一页，修改品牌应该留在当前页面
+            this.getPageList(this.tmForm.id?this.page:1);
+          }
+        }else{
+          console.log('error submit!!');
+          return false;
+        }
+      })
     }
   }
 }
@@ -230,3 +266,5 @@ export default {
     display: block;
   }
 </style>
+
+
