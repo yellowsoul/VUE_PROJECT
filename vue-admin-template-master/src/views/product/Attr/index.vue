@@ -1,6 +1,11 @@
 <template>
   <div>
-    Attr
+    <el-card style="margin:20px 0;">
+      <category-select @getCategoryId="getCategoryId"></category-select>
+    </el-card>
+    <el-card>
+      
+    </el-card>
   </div>
 </template>
 
@@ -8,9 +13,37 @@
 export default {
   name:'Attr',
   data () {
-    return {}
+    return {
+      category1Id:'',
+      category2Id:'',
+      category3Id:''
+    }
   },
-  methods: {},
+  methods: {
+    // 自定义事件的回调
+    getCategoryId({categoryId,level}){
+      console.log(level)
+      // 区分三级分类相应的id，以及父组件进行存储
+      if(level == 1){
+        this.category1Id = categoryId;
+        this.category2Id = ''
+        this.category3Id = ''
+      }else if(level == 2){
+        this.category2Id = categoryId;
+        this.category3Id = ''
+      }else{
+        // 代表三级分类的id有了
+        this.category3Id = categoryId;
+        // 发请求获取品牌属性
+        this.getAttrList();
+      }
+    },
+
+    // 获取平台属性的数据
+    getAttrList(){
+      console.log('发请求')
+    },
+  },
 }
 </script>
 
