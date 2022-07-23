@@ -25,7 +25,7 @@
       <el-table-column prop="prop" label="操作" width="width">
         <template slot-scope="{row,$index}">
           <el-button type="warning" icon="el-icon-edit" size="mini" @click="updateTradeMark(row)">修改</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteTradeMark(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -184,7 +184,7 @@ export default {
       // row：当前用户选中这个品牌信息
       // 显示对话框
       this.dialogFormVisible = true;
-      this.tmForm = {tmName:'', logoUrl:''}; // 防止在改变内容时没有确定提交，而是点了取消，tmForm留下的上次修改的痕迹，所以先重置初始值为空
+      // this.tmForm = {tmName:'', logoUrl:''}; // 防止在改变内容时没有确定提交，而是点了取消，tmForm留下的上次修改的痕迹，所以先重置初始值为空
       // 将已有的品牌信息赋值给tmForm进行展示
       // 将服务器返回品牌的信息，直接赋值给了tmForm进行展示
       // 也就是说tmForm存储即服务器返回品牌信息
@@ -237,6 +237,37 @@ export default {
           return false;
         }
       })
+    },
+
+    // 删除品牌信息的操作
+    deleteTradeMark(row){
+      // 弹框
+      this.$confirm(`你确定删除${row.tmName}?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        // 当用户点击确定按钮的时候会触发
+        // 向服务器发请求
+        let result = await this.$API.trademark.reqDeleteTrademark(row.id)
+        // 如何删除成功
+        if(result.code == 200){
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          // 再次获取品牌列表数据
+          // 删除品牌判断当前列表个数大于1停留当前页,否则小于等于0条回退到上一页(问题:如果是第1页,另作判断this.page = 1)
+          this.getPageList(this.list.length>1?this.page:this.page-1);
+        }
+        
+      }).catch(() => {
+        // 当用户点击取消按钮的时候会触发
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
     }
   }
 }
