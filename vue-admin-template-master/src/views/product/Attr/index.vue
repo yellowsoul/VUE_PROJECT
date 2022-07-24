@@ -36,7 +36,7 @@
                 type="warning"
                 icon="el-icon-edit"
                 size="mini"
-                @click="isShowTable = false"
+                @click="updateAttr(row)"
               ></el-button>
               <el-button
                 type="danger"
@@ -81,6 +81,8 @@
 </template>
 
 <script>
+// 按需引入lodash当中的深拷贝
+import cloneDeep from 'lodash/cloneDeep';
 export default {
   name: "Attr",
   data() {
@@ -165,7 +167,17 @@ export default {
         categoryId:this.category3Id, // 三级分类的id
         categoryLevel: 3, // 因为服务器也需要区分几级id
       }
-    }
+    },
+
+    // 修改某一个属性
+    updateAttr(row){
+      // isShowTable变为false
+      this.isShowTable = false;
+      // 将选中的属性赋值给attrInfo
+      // 由于数据结构当中存在对象里面套数组，数组里面又套对象，因此需要使用深拷贝解决这类问题
+      // 深拷贝，浅拷贝在面试的时候出现频率很高，切记达到手写深拷贝与浅拷贝
+      this.attrInfo = cloneDeep(row);
+    },
   },
 };
 </script>
