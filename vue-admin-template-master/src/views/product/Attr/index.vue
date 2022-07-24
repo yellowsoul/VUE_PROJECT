@@ -55,16 +55,24 @@
             <el-input placeholder="请输入属性名" v-model="attrInfo.attrName"></el-input>
           </el-form-item>
         </el-form>
-        <el-button type="primary" icon="el-icon-puls">添加属性值</el-button>
+        <el-button type="primary" icon="el-icon-puls" @click="addAttrValue" :disabled="!attrInfo.attrName">添加属性值</el-button>
         <el-button @click="isShowTable = true">取消</el-button>
-        <el-table style="width: 100%; margin: 20px 0" border>
+
+        <el-table style="width: 100%; margin: 20px 0" border :data="attrInfo.attrValueList">
           <el-table-column align="center" type="index" label="序号" width="80">
           </el-table-column>
           <el-table-column width="width" prop="prop" label="属性值名称">
+            <template slot-scope="{row, $index}">
+              <el-input v-model="row.valueName" placeholder="请输入属性值名称" size="mini"></el-input>
+            </template>
           </el-table-column>
           <el-table-column width="width" prop="prop" label="操作">
+            <template slot-scope="{row, $index}">
+              <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+            </template>
           </el-table-column>
         </el-table>
+
         <el-button type="primary">保存</el-button>
         <el-button @click="isShowTable = true">取消</el-button>
       </div>
@@ -88,10 +96,10 @@ export default {
       attrInfo: {
         attrName: "", // 属性名
         attrValueList: [ // 属性值，因为属性值可以有多个因此用数组，每一个属性值都是一个对象需要attrId、valueName
-          {
-            attrId: 0, // 相应的属性名的id
-            valueName: "",
-          },
+          // {
+          //   attrId: 0, // 相应的属性名的id
+          //   valueName: "",
+          // },
         ],
         categoryId:"", // 三级分类的id
         categoryLevel: 3, // 因为服务器也需要区分几级id
@@ -130,6 +138,17 @@ export default {
       if (result.code == 200) {
         this.attrList = result.data;
       }
+    },
+
+    // 添加属性值回调
+    addAttrValue(){
+      // 向属性值的数组里面添加元素
+      // attrId：是你相应的属性的id，目前而言我们是添加属性的操作，还没有相应的属性id，目前而言带给服务器的id为undefined
+      // valueName：相应的属性值的名称
+      this.attrInfo.attrValueList.push({
+        attrId:undefined,
+        valueName:''
+      })
     },
   },
 };
