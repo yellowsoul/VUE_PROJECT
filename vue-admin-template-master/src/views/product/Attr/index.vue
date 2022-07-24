@@ -10,7 +10,7 @@
           type="primary"
           icon="el-icon-plus"
           :disabled="!category3Id"
-          @click="isShowTable = false"
+          @click="addAttr"
           >添加属性</el-button
         >
         <!-- 表格：展示平台属性 -->
@@ -101,7 +101,7 @@ export default {
           //   valueName: "",
           // },
         ],
-        categoryId:"", // 三级分类的id
+        categoryId:0, // 三级分类的id
         categoryLevel: 3, // 因为服务器也需要区分几级id
       },
     };
@@ -150,6 +150,22 @@ export default {
         valueName:''
       })
     },
+
+    // 添加属性按钮的回调
+    addAttr(){
+      // 切换table显示与隐藏
+      this.isShowTable = false;
+      // 清除数据
+      // 收集三级列表id
+      this.attrInfo = {
+        attrName:'', // 属性名
+        attrValueList:[
+          // 属性值，因为属性值可以有多个因此用数组，每一个属性值都是一个对象需要attrId、valueName
+        ],
+        categoryId:this.category3Id, // 三级分类的id
+        categoryLevel: 3, // 因为服务器也需要区分几级id
+      }
+    }
   },
 };
 </script>
