@@ -63,7 +63,9 @@
           </el-table-column>
           <el-table-column width="width" prop="prop" label="属性值名称">
             <template slot-scope="{row, $index}">
-              <el-input v-model="row.valueName" placeholder="请输入属性值名称" size="mini"></el-input>
+              <el-input v-model="row.valueName" placeholder="请输入属性值名称" size="mini" v-if="row.flag" @blur="toLook(row)" @keyup.native.enter="toLook(row)"></el-input>
+              <!-- 这里结构需要用到sapn与input来回切换 -->
+              <span v-else @click="row.flag = true" style="display:block">{{row.valueName}}</span>
             </template>
           </el-table-column>
           <el-table-column width="width" prop="prop" label="操作">
@@ -148,9 +150,12 @@ export default {
       // attrId：是你相应的属性的id，目前而言我们是添加属性的操作，还没有相应的属性id，目前而言带给服务器的id为undefined
       // valueName：相应的属性值的名称
       this.attrInfo.attrValueList.push({
-        attrId:undefined,
-        valueName:''
-      })
+        attrId:this.attrInfo.id, //对于修改某一个属性的时候，可以在已有的属性值基础之上新增新的属性值（新增属性值的时候，需要把已有的属性的id带上）
+        valueName:'',
+        flag:true
+      });
+      // flag属性，给每一个属性值添加一个标记flag，用于切换查看模式与编辑模式，每一个属性值可以控制自己的模式切换
+      // 当前flag属性，响应式数据（数据变化视图跟着变化）
     },
 
     // 添加属性按钮的回调
@@ -177,6 +182,11 @@ export default {
       // 由于数据结构当中存在对象里面套数组，数组里面又套对象，因此需要使用深拷贝解决这类问题
       // 深拷贝，浅拷贝在面试的时候出现频率很高，切记达到手写深拷贝与浅拷贝
       this.attrInfo = cloneDeep(row);
+    },
+
+    // 失去焦点的事件---切换为查看模式，展示span
+    toLook(row){
+      row.flag = false;
     },
   },
 };
