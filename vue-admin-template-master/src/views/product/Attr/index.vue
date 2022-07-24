@@ -50,19 +50,19 @@
 
       <!-- 添加属性|修改属性的结构 -->
       <div v-show="!isShowTable">
-        <el-form :inline="true" ref="form" label-width="80px">
+        <el-form :inline="true" ref="form" label-width="80px" :model="attrInfo">
           <el-form-item label="属性名">
-            <el-input placeholder="请输入属性名"></el-input>
+            <el-input placeholder="请输入属性名" v-model="attrInfo.attrName"></el-input>
           </el-form-item>
         </el-form>
-        <el-button type="primary" icon="el-icon-puls" @click="">添加属性值</el-button>
-        <el-button  @click="isShowTable = true">取消</el-button>
-        <el-table style="width: 100%;margin:20px 0;" border>
+        <el-button type="primary" icon="el-icon-puls">添加属性值</el-button>
+        <el-button @click="isShowTable = true">取消</el-button>
+        <el-table style="width: 100%; margin: 20px 0" border>
           <el-table-column align="center" type="index" label="序号" width="80">
           </el-table-column>
-          <el-table-column  width="width" prop="prop" label="属性值名称">
+          <el-table-column width="width" prop="prop" label="属性值名称">
           </el-table-column>
-          <el-table-column  width="width" prop="prop" label="操作">
+          <el-table-column width="width" prop="prop" label="操作">
           </el-table-column>
         </el-table>
         <el-button type="primary">保存</el-button>
@@ -83,7 +83,19 @@ export default {
       // 接收平台属性的字段
       attrList: [],
       // 这个属性是控制table表格显示与隐藏的
-      isShowTable: false,
+      isShowTable: true,
+      // 收集新增属性|修改属性使用的
+      attrInfo: {
+        attrName: "", // 属性名
+        attrValueList: [ // 属性值，因为属性值可以有多个因此用数组，每一个属性值都是一个对象需要attrId、valueName
+          {
+            attrId: 0, // 相应的属性名的id
+            valueName: "",
+          },
+        ],
+        categoryId:"", // 三级分类的id
+        categoryLevel: 3, // 因为服务器也需要区分几级id
+      },
     };
   },
   methods: {
