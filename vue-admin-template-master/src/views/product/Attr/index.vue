@@ -186,6 +186,26 @@ export default {
 
     // 失去焦点的事件---切换为查看模式，展示span
     toLook(row){
+      // 如果属性值为空不能作为新的属性值，需要给用户提示，让他输入一个其他的属性值
+      if(row.valueName.trim() == ''){
+        this.$message("请你输入一个正常的属性值");
+        return;
+      }
+      // 新增的属性值不能与已有的属性值重复
+      let isRepat = this.attrInfo.attrValueList.some(item => {
+        // 需要将row从数组里面判断的时候去除（黄龙：请记住这个知识点）
+        // row是最新新增的属性值【数组的最后一项元素】
+        // 判断的时候，需要把已有的数组当中的这个属性值去除
+        if(row!==item){ 
+          return row.valueName == item.valueName;
+        }
+      });
+      if(isRepat){
+        this.$message("不能输入重复的属性值");
+        return;
+      }
+      // row：形参是当前用户添加的是最新的属性值
+      // 当前的编辑模式变为查看模式【让input消失，显示span】
       row.flag = false;
     },
   },
