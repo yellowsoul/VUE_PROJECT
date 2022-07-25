@@ -182,6 +182,15 @@ export default {
       // 由于数据结构当中存在对象里面套数组，数组里面又套对象，因此需要使用深拷贝解决这类问题
       // 深拷贝，浅拷贝在面试的时候出现频率很高，切记达到手写深拷贝与浅拷贝
       this.attrInfo = cloneDeep(row);
+      // 在修改某一个属性的时候，将相应的属性值元素添加上flag这个标记
+      this.attrInfo.attrValueList.forEach(item => {
+        // 这样书写也可以给属性值添加flag字段，但是会发现视图不会跟着变化（因为flag不是响应式数据）
+        // 因为 Vue 无法探测普通的新增 property，这样书写的属性并非响应式属性（数据变化视图跟着变）
+        // item.flag = false;
+        // $set响应式：第一个参数：对象 第二个参数：添加新的响应式属性  第三个参数：新的属性的属性值
+        this.$set(item,'flag',false);
+      });
+
     },
 
     // 失去焦点的事件---切换为查看模式，展示span
