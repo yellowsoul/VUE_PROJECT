@@ -49,7 +49,7 @@
         </el-pagination>
         
       </div>
-      <spu-form v-show="scene == 1"></spu-form>
+      <spu-form v-show="scene == 1" ref="spu" @changeScene="changeScene"></spu-form>
       <sku-form v-show="scene == 2"></sku-form>
     </el-card>
   </div>
@@ -136,7 +136,20 @@ export default {
     // 修改某一个SPU
     updateSpu(row){
       this.scene = 1;
+      // 获取子组件SpuForm子组件
+      // 在父组件当中可以通过$ref获取子组件等等
+      this.$refs.spu.initSpuData(row);
     },
+
+    // 自定义事件回调(SpuForm)
+    changeScene(scene){
+      // 切换结构、场景
+      this.scene = scene;
+    },
+  },
+  
+  // 组件挂载完毕
+  mounted(){
   },
 };
 </script>

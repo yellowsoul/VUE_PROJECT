@@ -48,7 +48,7 @@
 
       <el-form-item>
         <el-button type="primary">保存</el-button>
-        <el-button>取消</el-button>
+        <el-button @click="$emit('changeScene',0)">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -71,6 +71,11 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
+
+    // 初始化SpuForm数据
+    initSpuData(spu){
+      console.log('发请求',spu)
+    }
   },
 };
 </script>
