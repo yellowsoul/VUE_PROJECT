@@ -10,9 +10,9 @@
 
     <el-card>
       <!-- 底部这里将来是有三部分进行切换 -->
-      <div>
+      <div v-show="scene == 0">
         <!-- 展示SPU列表的结构 -->
-        <el-button type="primary" icon="el-icon-plus">添加SPU</el-button>
+        <el-button type="primary" icon="el-icon-plus" :disabled="!category3Id" @click="addSpu">添加SPU</el-button>
         <el-table border :data="records">
           <el-table-column type="index" label="序号" width="80" align="center">
           </el-table-column>
@@ -24,7 +24,7 @@
             <template slot-scope="{row,$index}">
               <!-- 这里的按钮将来用hintButton替换 -->
                 <hint-button type="success" icon="el-icon-plus" size="mini" title="添加sku"></hint-button>
-                <hint-button type="warning" icon="el-icon-edit" size="mini" title="修改spu"></hint-button>
+                <hint-button type="warning" icon="el-icon-edit" size="mini" title="修改spu" @click="updateSpu(row)"></hint-button>
                 <hint-button type="info" icon="el-icon-info" size="mini" title="查看当前spu全部sku列表"></hint-button>
                 <hint-button type="danger" icon="el-icon-delete" size="mini" title="删除spu"></hint-button>
             </template>
@@ -49,13 +49,22 @@
         </el-pagination>
         
       </div>
+      <spu-form v-show="scene == 1"></spu-form>
+      <sku-form v-show="scene == 2"></sku-form>
     </el-card>
   </div>
 </template>
 
 <script>
+// 引入子组件
+import SpuForm from './SpuForm';
+import SkuForm from './SkuForm';
 export default {
   name: "Spu",
+  components:{
+    SpuForm,
+    SkuForm
+  },
   data() {
     return {
       // 分别是分类的ID
@@ -69,6 +78,8 @@ export default {
       limit:3, // 每一页需要展示多少条数据
       records:[], // spu列表的数据
       total:0, // 分页器一共需要展示数据的条数
+      
+      scene:0, // 代表展示SPU列表数据   1 添加SPU|修改SPU   2添加SKU
     };
   },
   methods: {
@@ -115,7 +126,17 @@ export default {
       this.limit = limit;
       // 发送请求
       this.getSpuList();
-    }
+    },
+
+    // 添加SPU按钮的回调
+    addSpu(){
+      this.scene = 1;
+    },
+
+    // 修改某一个SPU
+    updateSpu(row){
+      this.scene = 1;
+    },
   },
 };
 </script>
