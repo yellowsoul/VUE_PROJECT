@@ -4,7 +4,7 @@
       <!-- 三级联动已经是全局组件了 -->
       <category-select
         @getCategoryId="getCategoryId"
-        :show="!show"
+        :show="scene!=0"
       ></category-select>
     </el-card>
 
@@ -72,7 +72,7 @@ export default {
       category2Id: "",
       category3Id: "",
       // 控制三级联动的可操作性
-      show: true,
+      // show: true,
 
       page:1, // 分页器当前第几页
       limit:3, // 每一页需要展示多少条数据

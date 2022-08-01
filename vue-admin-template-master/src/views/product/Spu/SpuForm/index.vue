@@ -61,7 +61,7 @@
             <template slot-scope="{ row, $index }">
               <!-- @close="handleClose(tag)" -->
               <!-- el-tag:用于展示已有的属性值列表的数据的 -->
-              <el-tag :key="tag.id" v-for="tag in row.spuSaleAttrValueList" closable :disable-transitions="false" >{{ tag.saleAttrValueName }}</el-tag>
+              <el-tag :key="tag.id" v-for="(tag, index) in row.spuSaleAttrValueList" closable :disable-transitions="false" @close="row.spuSaleAttrValueList.splice(index, 1)">{{ tag.saleAttrValueName }}</el-tag>
               <!-- 底下的结构可以当作咱们当年的span与input切换 -->
               <!-- @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm" -->
               <el-input class="input-new-tag" v-if="row.inputVisible" v-model="row.inputValue" ref="saveTagInput" size="small" @blur="handleInputConfirm(row)">
@@ -73,7 +73,7 @@
 
           <el-table-column prop="prop" label="操作" width="width">
             <template slot-scope="{row, $index}">
-              <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+              <el-button type="danger" icon="el-icon-delete" size="mini" @click="spu.spuSaleAttrList.splice($index, 1)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -207,6 +207,7 @@ export default {
           item.name = item.imgName;
           item.url = item.imgUrl;
         });
+        
         // 把整理好的数据赋值给
         this.spuImageList = listArr;
       }
