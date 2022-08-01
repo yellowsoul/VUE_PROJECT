@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{unSelectSaleAttr}}
+    <!-- {{unSelectSaleAttr}} -->
     <el-form ref="form" label-width="80px" :model="spu">
       <el-form-item label="SPU名称">
         <el-input placeholder="SPU名称" v-model="spu.spuName"></el-input>
@@ -80,7 +80,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary">保存</el-button>
+        <el-button type="primary" @click="addOrUpdateSpu">保存</el-button>
         <el-button @click="$emit('changeScene', 0)">取消</el-button>
       </el-form-item>
     </el-form>
@@ -266,6 +266,26 @@ export default {
 
       // 修改inputVisible为false，就显示button了
       row.inputVisible = false;
+    },
+
+    // 保存按钮的回调
+    async addOrUpdateSpu(){
+      // 整理参数：需要整理照片墙的数据
+      // 携带参数：对于图片，需要携带imgName与imgUrl字段
+      this.spu.spuImageList = this.spuImageList.map(item => {
+        return {
+          imageName:item.name,
+          imgUrl:(item.response&&item.response.data)||item.url //item.response有值则代表是新添加的图
+        }
+      });
+
+      // 发请求
+      let result = await this.$API.spu.reqAddOrUpdateSpu(this.spu);
+      if(result.code == 200){
+        this.$message({type:'success',message:'保存成功'})
+        // 通知父组件回到场景0
+         this.$emit('changeScene', 0);
+      }
     },
   },
 };
