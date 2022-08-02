@@ -131,6 +131,8 @@ export default {
     // 添加SPU按钮的回调
     addSpu(){
       this.scene = 1;
+      // 通知子组件SpuForm发请求---两个
+      this.$refs.spu.addSpuData(this.category3Id);
     },
 
     // 修改某一个SPU
@@ -142,11 +144,17 @@ export default {
     },
 
     // 自定义事件回调(SpuForm)
-    changeScene(scene){
-      // 切换结构、场景
+    changeScene({scene, flag}){
+      // flag这个形参为了区分保存按钮是添加还是修改
+      // 切换结构（场景）
       this.scene = scene;
-      // 子组件通知父组件切换场景，需要再次获取SPU列表的数据进行展示，并停留在当前页
-      this.getSpuList(this.page);
+      if(flag == "修改"){
+        // 子组件通知父组件切换场景，需要再次获取SPU列表的数据进行展示，并停留在当前页
+        this.getSpuList(this.page);
+      }else{
+        // 子组件通知父组件切换场景，需要再次获取SPU列表的数据进行展示，并回到默认第一页
+        this.getSpuList();
+      }
     },
   },
   
