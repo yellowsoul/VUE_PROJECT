@@ -336,6 +336,7 @@ export default {
           scene: 0,
           flag: this.spu.id ? "修改" : "添加",
         });
+
       }
 
       //清除数据（this.$options.data() -> 执行返回数据起始状态，赋值给this._data - > 响应式数据）
