@@ -208,7 +208,7 @@ export default {
     /** 
      * scene：2 添加SKU
      *  */
-    
+
     // 添加SKU按钮的回调
     addSku(row){
       // 切换场景为2
