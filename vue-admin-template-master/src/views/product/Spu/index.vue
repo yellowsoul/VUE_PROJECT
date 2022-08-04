@@ -86,7 +86,7 @@
         ref="spu"
         @changeScene="changeScene"
       ></spu-form>
-      <sku-form v-show="scene == 2"></sku-form>
+      <sku-form v-show="scene == 2" ref="sku"></sku-form>
     </el-card>
   </div>
 </template>
@@ -213,6 +213,8 @@ export default {
     addSku(row){
       // 切换场景为2
       this.scene = 2;
+      // 父组件调用子组件的方法，让子组件发请求----三个请求
+      this.$refs.sku.getData(this.category1Id, this.category2Id, row);
     },
   },
 
