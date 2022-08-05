@@ -17,7 +17,8 @@
           icon="el-icon-plus"
           :disabled="!category3Id"
           @click="addSpu"
-        >添加SPU</el-button>
+          >添加SPU</el-button
+        >
         <el-table border :data="records">
           <el-table-column type="index" label="序号" width="80" align="center">
           </el-table-column>
@@ -89,30 +90,42 @@
         @changeScene="changeScene"
       ></spu-form>
       <!-- 子组件SKU -->
-      <sku-form v-show="scene == 2" ref="sku" @changeScenes="changeScenes"></sku-form>
+      <sku-form
+        v-show="scene == 2"
+        ref="sku"
+        @changeScenes="changeScenes"
+      ></sku-form>
 
       <!-- 查看SPU下的SKU列表弹窗 -->
-      <el-dialog :title="`${spu.spuName}的sku列表`" :visible.sync="dialogTableVisible">
+      <el-dialog
+        :title="`${spu.spuName}的sku列表`"
+        :visible.sync="dialogTableVisible"
+        :before-close="close"
+      >
         <!-- table展示sku的列表 -->
-        <el-table :data="skuList" style="width:100%;" border>
-          <el-table-column  prop="skuName" label="名称" width="width">
-            
+        <el-table
+          :data="skuList"
+          style="width: 100%"
+          border
+          v-loading="loading"
+        >
+          <el-table-column prop="skuName" label="名称" width="width">
           </el-table-column>
-          <el-table-column  prop="price" label="价格" width="width">
-            
+          <el-table-column prop="price" label="价格" width="width">
           </el-table-column>
-          <el-table-column  prop="weight" label="重量" width="width">
-            
+          <el-table-column prop="weight" label="重量" width="width">
           </el-table-column>
           <el-table-column label="默认图片" width="width">
-            <template slot-scope="{row, $index}">
-              <img :src="row.skuDefaultImg" alt="" style="width:100px;height:100px;">
+            <template slot-scope="{ row, $index }">
+              <img
+                :src="row.skuDefaultImg"
+                alt=""
+                style="width: 100px; height: 100px"
+              />
             </template>
           </el-table-column>
         </el-table>
-        
       </el-dialog>
-
     </el-card>
   </div>
 </template>
@@ -143,9 +156,10 @@ export default {
 
       scene: 0, // 代表展示SPU列表数据   1 添加SPU|修改SPU   2添加SKU
       // 控制对话框显示与隐藏
-      dialogTableVisible:false,
-      spu:{},
-      skuList:[], // 存储的是SKU列表的数据
+      dialogTableVisible: false,
+      spu: {},
+      skuList: [], // 存储的是SKU列表的数据
+      loading: true,
     };
   },
   methods: {
@@ -233,14 +247,12 @@ export default {
       }
     },
 
-
-
-    /** 
+    /**
      * scene：2 添加SKU
      *  */
 
     // 添加SKU按钮的回调
-    addSku(row){
+    addSku(row) {
       // 切换场景为2
       this.scene = 2;
       // 父组件调用子组件的方法，让子组件发请求----三个请求
@@ -248,21 +260,33 @@ export default {
     },
 
     // skuForm通知父组件修改场景
-    changeScenes(scene){
+    changeScenes(scene) {
       this.scene = scene;
     },
 
     // 查看SKU的按钮的回调
-    async handler(spu){
+    async handler(spu) {
       // 保存SPU信息
       this.spu = spu;
       // 点击这个按钮的时候，对话框可见的
       this.dialogTableVisible = true;
       // 获取sku列表的数据进行展示
       let result = await this.$API.spu.reqSkuList(spu.id);
-      if(result.code == 200){
+      if (result.code == 200) {
         this.skuList = result.data;
+        // 让loading隐藏
+        this.loading = false;
       }
+    },
+
+    // 关闭对话框的回调
+    close(done){
+      // loading属性再次变为真(为下次加载加上动画)
+      this.loading = true;
+      // 清除sku列表的数据(解决快速切换时查看sku弹窗列表短暂显示上一次的数据问题)
+      this.skuList = [];
+      // 关闭对话框
+      done();
     },
   },
 
