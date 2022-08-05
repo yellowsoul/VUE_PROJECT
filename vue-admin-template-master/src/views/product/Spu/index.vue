@@ -47,6 +47,7 @@
                 icon="el-icon-info"
                 size="mini"
                 title="查看当前spu全部sku列表"
+                @click="handler(row)"
               ></hint-button>
 
               <el-popconfirm
@@ -81,13 +82,37 @@
         >
         </el-pagination>
       </div>
+      <!-- 子组件SPU -->
       <spu-form
         v-show="scene == 1"
         ref="spu"
         @changeScene="changeScene"
       ></spu-form>
-
+      <!-- 子组件SKU -->
       <sku-form v-show="scene == 2" ref="sku" @changeScenes="changeScenes"></sku-form>
+
+      <!-- 查看SPU下的SKU列表弹窗 -->
+      <el-dialog :title="`${spu.spuName}的sku列表`" :visible.sync="dialogTableVisible">
+        <!-- table展示sku的列表 -->
+        <el-table :data="skuList" style="width:100%;" border>
+          <el-table-column  prop="skuName" label="名称" width="width">
+            
+          </el-table-column>
+          <el-table-column  prop="price" label="价格" width="width">
+            
+          </el-table-column>
+          <el-table-column  prop="weight" label="重量" width="width">
+            
+          </el-table-column>
+          <el-table-column label="默认图片" width="width">
+            <template slot-scope="{row, $index}">
+              <img :src="row.skuDefaultImg" alt="" style="width:100px;height:100px;">
+            </template>
+          </el-table-column>
+        </el-table>
+        
+      </el-dialog>
+
     </el-card>
   </div>
 </template>
@@ -117,6 +142,10 @@ export default {
       total: 0, // 分页器一共需要展示数据的条数
 
       scene: 0, // 代表展示SPU列表数据   1 添加SPU|修改SPU   2添加SKU
+      // 控制对话框显示与隐藏
+      dialogTableVisible:false,
+      spu:{},
+      skuList:[], // 存储的是SKU列表的数据
     };
   },
   methods: {
@@ -221,6 +250,19 @@ export default {
     // skuForm通知父组件修改场景
     changeScenes(scene){
       this.scene = scene;
+    },
+
+    // 查看SKU的按钮的回调
+    async handler(spu){
+      // 保存SPU信息
+      this.spu = spu;
+      // 点击这个按钮的时候，对话框可见的
+      this.dialogTableVisible = true;
+      // 获取sku列表的数据进行展示
+      let result = await this.$API.spu.reqSkuList(spu.id);
+      if(result.code == 200){
+        this.skuList = result.data;
+      }
     },
   },
 

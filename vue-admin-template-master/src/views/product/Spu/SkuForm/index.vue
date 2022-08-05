@@ -277,7 +277,8 @@ export default {
         this.$message({type:'success',message:'添加SKU成功'});
         // 自定义事件,让父组件切换场景0
         this.$emit('changeScenes',0);
-
+        // 清除数据
+        Object.assign(this._data,this.$options.data());
       }
     }
   },

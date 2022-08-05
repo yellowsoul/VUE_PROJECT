@@ -57,4 +57,9 @@ export const reqAttrInfoList = (category1Id, category2Id, category3Id) => reques
 
 // 添加SKU 
 // POST /admin/product/saveSkuInfo
-export const reqAddSku = (skuInfo) => request({url:'/admin/product/saveSkuInfo',method:'post',data:skuInfo})
+export const reqAddSku = (skuInfo) => request({url:'/admin/product/saveSkuInfo',method:'post',data:skuInfo});
+
+
+// 获取SKU弹窗列表数据的接口
+// GET /admin/product/findBySpuId/{spuId}
+export const reqSkuList = (spuId) => request({url:`/admin/product/findBySpuId/${spuId}`,method:'get'});
