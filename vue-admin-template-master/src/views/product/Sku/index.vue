@@ -185,7 +185,7 @@ export default {
     margin:10px;
   }
 
-  >>>.el-carousel__button{
+  .el-carousel__button{
     width:10px;
     height:10px;
     background:red;
