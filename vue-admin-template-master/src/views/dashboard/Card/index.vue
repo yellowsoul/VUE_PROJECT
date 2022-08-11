@@ -33,6 +33,9 @@
         <el-card>
           <!-- 第三个card -->
           <Detail title="支付笔数" count="88460">
+            <template slot="charts">
+              <barCharts></barCharts>
+            </template>
             <template slot="footer">
               <span>转化率64%</span>
             </template>
@@ -43,6 +46,9 @@
         <el-card>
           <!-- 第四个card -->
           <Detail title="运营活动效果" count="78%">
+            <template slot="charts">
+              <progressCharts></progressCharts>
+            </template>
             <template slot="footer">
               <span>周同比&nbsp;&nbsp;56.67% <svg t="1660050195423" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4732" width="16" height="16"><path d="M65.582671 735.208665l446.417329-446.41733 446.417329 446.41733z" p-id="4733" fill="#d81e06"></path></svg></span>
               &nbsp;&nbsp;
@@ -59,11 +65,15 @@
 <script>
 import Detail from './Detail';
 import lineCharts from './lineChart';
+import barCharts from './barChart';
+import progressCharts from './progressCharts';
 export default {
   name:'Card',
   components:{
     Detail,
-    lineCharts
+    lineCharts,
+    barCharts,
+    progressCharts
   },
   data () {
     return {}

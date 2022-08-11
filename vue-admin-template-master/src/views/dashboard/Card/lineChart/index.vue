@@ -29,6 +29,7 @@ export default {
       series: [
         {
           type: "line",
+          smooth: true, // 设置折线平滑效果
           data: [10, 7, 33, 12, 48, 9,44],
           // 拐点的样式的设置
           itemStyle: {
