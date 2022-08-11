@@ -2,16 +2,19 @@
   <div class="dashboard-container">
     <!-- <div class="dashboard-text">name: {{ name }}</div> -->
     <Card></Card>
+    <Sale></Sale>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Card from './Card'
+import Sale from './Sale'
 export default {
   name: 'Dashboard',
   components:{
-    Card
+    Card,
+    Sale
 },
   computed: {
     ...mapGetters([
