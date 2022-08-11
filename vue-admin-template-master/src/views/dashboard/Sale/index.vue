@@ -190,6 +190,9 @@ export default {
 </script>
 
 <style scoped>
+/deep/.el-card__header{
+  border-bottom:none !important;
+}
 .header {
   position: relative;
   display: flex;

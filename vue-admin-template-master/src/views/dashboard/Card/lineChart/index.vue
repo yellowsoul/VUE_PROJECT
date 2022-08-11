@@ -38,6 +38,7 @@ export default {
           // 线条的样式
           lineStyle: {
             color: "purple",
+            cap:"round"
           },
           // 填充颜色设置
           // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
