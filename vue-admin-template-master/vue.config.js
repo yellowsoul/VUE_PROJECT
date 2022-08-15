@@ -44,7 +44,9 @@ module.exports = {
         changeOrigin:true, // 是否跨域
         pathRewrite: {"^/dev-api" : ""}
       }
-    }
+    },
+    // 开启mock数据
+    // before:require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
