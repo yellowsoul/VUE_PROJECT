@@ -29,6 +29,10 @@ import Layout from '@/layout'
 
 // 路由的配置，为什么不同的用户登录我们的项目，菜单（路由）都是一样的？
 // 因为咱们的路由‘死的’，不管你是谁，你能看见的，操作的菜单都是一样的
+// 需要把项目中的路由进行拆分（不同用户登录所展示的菜单是不一样的）
+
+// 【常量路由】：就是不管用户是什么角色，都可以看见的路由
+// 不管什么角色（超级管理员，普通员工），登录、404、首页
 export const constantRoutes = [
   {
     path: '/login',
@@ -53,7 +57,12 @@ export const constantRoutes = [
       meta: { title: '首页', icon: 'dashboard' }
     }]
   },
-  
+
+
+]
+
+// 【异步路由】：不同的用户（角色），需要过滤筛选出的路由，称之为异步路由
+export const asyncRoutes = [
   // 权限管理
   {
     name: 'Acl',
@@ -101,43 +110,44 @@ export const constantRoutes = [
       },
     ]
   },
-  
+
   // 商品管理
   {
     path: '/product',
-    component:Layout,
-    name:'Product',
-    meta:{title:'商品管理',icon:'el-icon-goods'},
-    children:[
+    component: Layout,
+    name: 'Product',
+    meta: { title: '商品管理', icon: 'el-icon-goods' },
+    children: [
       {
-        path:'tradeMark',
-        name:'tradeMark',
+        path: 'tradeMark',
+        name: 'tradeMark',
         component: () => import('@/views/product/tradeMark'),
-        meta:{ title:'品牌管理' }
+        meta: { title: '品牌管理' }
       },
       {
-        path:'attr',
-        name:'Attr',
+        path: 'attr',
+        name: 'Attr',
         component: () => import('@/views/product/Attr'),
-        meta:{ title:'平台属性管理' }
+        meta: { title: '平台属性管理' }
       },
       {
-        path:'spu',
-        name:'Spu',
+        path: 'spu',
+        name: 'Spu',
         component: () => import('@/views/product/Spu'),
-        meta:{ title:'Spu管理' }
+        meta: { title: 'Spu管理' }
       },
       {
-        path:'sku',
-        name:'Sku',
+        path: 'sku',
+        name: 'Sku',
         component: () => import('@/views/product/Sku'),
-        meta:{ title:'Sku管理' }
+        meta: { title: 'Sku管理' }
       },
     ]
-  },
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
-]
+  }
+];
+
+// 【任意路由】：当路径出现错误的时候重定向404
+export const anyRoutes =  [{ path: '*', redirect: '/404', hidden: true }];
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

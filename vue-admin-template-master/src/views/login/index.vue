@@ -2,7 +2,7 @@
   <div class="login-container">
     <!-- 背景 -->
     <div class="wallpaper layer ready" :style="{ 'background-image': 'url('+require('../../assets/1.jpg')+')'}">
-       <div class="wallpaper-mask"></div>
+      <div class="wallpaper-mask"></div>
     </div>
     <!-- el-form组件，elementUI插件里面的一个组件，经常展示表单元素 model：用于收集表单数据 rules：表单验证规则 -->
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
