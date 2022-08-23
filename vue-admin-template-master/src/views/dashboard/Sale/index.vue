@@ -185,18 +185,8 @@ export default {
         title:{
           text:this.title+"趋势"
         },
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "shadow",
-          },
-        },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
-          containLabel: true,
-        },
+
+
         xAxis: [
           {
             type: "category",
@@ -206,11 +196,7 @@ export default {
             },
           },
         ],
-        yAxis: [
-          {
-            type: "value",
-          },
-        ],
+
         series: [
           {
             name: "Direct",
