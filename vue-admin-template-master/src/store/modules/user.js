@@ -74,6 +74,7 @@ const mutations = {
     state.resultAllRoutes = constantRoutes.concat(state.resultAsyncRoutes, anyRoutes);
     // 给路由器添加最新的路由，把左侧菜单显示出来(注意：需要在sliderbar组件：遍历的应该是仓库计算完毕的全部路由)
     router.addRoutes(state.resultAllRoutes)
+    
   }
 }
 

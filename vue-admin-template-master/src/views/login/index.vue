@@ -94,12 +94,13 @@ export default {
     }
   },
   watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
+    // $route: {
+    //   handler: function(route) {
+    //     this.redirect = route.query && route.query.redirect
+    //     console.log(this.redirect)
+    //   },
+    //   immediate: true
+    // }
   },
   methods: {
     showPwd() {
